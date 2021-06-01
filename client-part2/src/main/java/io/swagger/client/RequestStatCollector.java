@@ -31,6 +31,7 @@ public class RequestStatCollector implements Runnable {
         latencies.add(stat.latency);
         writer.write(stat.toString());
       }
+      Collections.sort(latencies);
       writer.close();
     } catch (InterruptedException | IOException e) {
       System.err.format("Exception on RequestStateCollector Runnable: %s%n", e);
@@ -39,7 +40,7 @@ public class RequestStatCollector implements Runnable {
 
   public long getPercentile(int percentile) {
     int total = latencies.size();
-    int index = (int) Math.floor(total * (percentile / 100.0));
+    int index = (int) (total * (percentile / 100.0));
     return latencies.get(index);
   }
 

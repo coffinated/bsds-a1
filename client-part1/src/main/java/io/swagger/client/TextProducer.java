@@ -22,8 +22,7 @@ public class TextProducer implements Runnable {
     try {
       BufferedReader reader = Files.newBufferedReader(this.file);
       String line;
-      // using BufferedQueue means lines will be added until the limit is reached,
-      // then the producer will wait until there is space to add more lines
+
       while ((line = reader.readLine()) != null) {
         if (line.isEmpty()) {
           continue;

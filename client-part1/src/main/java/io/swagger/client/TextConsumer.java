@@ -12,15 +12,16 @@ public class TextConsumer implements Runnable {
   private final BlockingQueue<String> bq;
   private final CountDownLatch c;
   private final TextbodyApiClient client;
+  private final TextbodyApi apiInstance;
 
   public TextConsumer(BlockingQueue<String> bq, CountDownLatch c, TextbodyApiClient client) {
     this.bq = bq;
     this.c = c;
     this.client = client;
+    this.apiInstance = new TextbodyApi();
   }
 
   public void run() {
-    TextbodyApi apiInstance = new TextbodyApi();
     String function = "wordcount";
     try {
       while (true) {

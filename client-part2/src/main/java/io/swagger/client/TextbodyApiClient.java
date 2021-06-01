@@ -57,7 +57,8 @@ public class TextbodyApiClient {
     long start = System.currentTimeMillis();
 
     RequestStatCollector statCollector = new RequestStatCollector(stats);
-    new Thread(statCollector).start();
+    Thread sc = new Thread(statCollector);
+    sc.start();
     TextProducer prod = new TextProducer(bq, file, maxThreads);
     new Thread(prod).start();
 
@@ -69,11 +70,12 @@ public class TextbodyApiClient {
       new Thread(con).start();
     }
     completed.await();
+    long end = System.currentTimeMillis();
 
     RequestStat notify = RequestStat.newEndOfStats();
     stats.put(notify);
+    sc.join();
 
-    long end = System.currentTimeMillis();
     long wall = end - start;
     double throughput = (client.getSuccesses() + client.getFails()) / (wall/1000.0);
 
